@@ -37,7 +37,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	//UProjectileMovementComponent* MovementComponent;
-	UFloatingPawnMovement* MovementComponent;
+	//UFloatingPawnMovement* MovementComponent;
+	UPawnMovementComponent* MovementComponent;
 
 public:
 	// Called every frame

@@ -21,8 +21,7 @@ APac::APac()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	SphereComponent->SetupAttachment(RootComponent);
 	
-	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
-	//MovementComponent->bShouldBounce = true;
+	MovementComponent = CreateDefaultSubobject<UPawnMovementComponent>(TEXT("Movement"));
 }
 
 
@@ -45,19 +44,37 @@ void APac::OnPacHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrim
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Pac HIT wall"));
+	// Get the hit point and surface normal
+	/*
+	const FVector HitPoint = Hit.ImpactPoint;
 	const FVector SurfaceNormal = Hit.ImpactNormal;
-	const FVector DistanceToGoal = (Hit.ImpactPoint - GetActorLocation());
+	
+	// Calculate a location around collision
+	FVector AdjustedLocation = HitPoint +  SurfaceNormal * 20.f;
 
-	const FVector DirectionVector = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), Hit.Location);
-	const double ProjectionOnSurfNorm = -SurfaceNormal.Dot(DistanceToGoal);
-		
+	
+
+	// Projection of DroneToGoal on SurfaceNormal
+	const double ProjectionOnSurfNorm = -SurfaceNormal.Dot(MovementComponent->Velocity);
 
 	// reflection vector from hit point
-	//FVector ReflectionVector = (2 * ProjectionOnSurfNorm * SurfaceNormal * DistanceToGoal .Size() - DistanceToGoal);
-	//ReflectionVector = ReflectionVector.GetSafeNormal() * ReflectionVector.Size();
-	FVector ReflectionVector = FMath::GetReflectionVector(DirectionVector, Hit.Normal) + GetActorLocation();
-	//PacMovement->AddInputVector(ReflectionVector);
-	//PacMovement->Velocity += ReflectionVector;
+	FVector ReflectionVector = (2 * ProjectionOnSurfNorm * SurfaceNormal * MovementComponent->Velocity.Size() * 10.f - MovementComponent->Velocity);
+	ReflectionVector = ReflectionVector.GetSafeNormal() * ReflectionVector.Size(); 
+	MovementComponent->Velocity += ReflectionVector;
+
+	AdjustedLocation += ReflectionVector;
+	DrawDebugSphere(GetWorld(), AdjustedLocation, 30.f, 30, FColor::Black, false,0.2f);
+
+	*/
+	const FVector SurfaceNormal = Hit.ImpactNormal;
+	//UE_LOG(LogTemp, Warning, TEXT("VelIMP %f, %f, %f "), SurfaceNormal.X,SurfaceNormal.Y, SurfaceNormal.Z);
+	const double ProjectionOnSurfNorm = -SurfaceNormal.Dot(MovementComponent->Velocity);
+	//FVector ReflectionVector = (2 * ProjectionOnSurfNorm * SurfaceNormal * MovementComponent->Velocity.Size() * 10.f - MovementComponent->Velocity);
+	//UE_LOG(LogTemp, Warning, TEXT("Vel %f, %f, %f "), MovementComponent->Velocity.X, MovementComponent->Velocity.Y, MovementComponent->Velocity.Z);
+	FVector ReflectionVector = UKismetMathLibrary::GetReflectionVector(UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), Hit.Location), SurfaceNormal);
+	ReflectionVector = ReflectionVector.GetSafeNormal() * ReflectionVector.Size();
+	MovementComponent->AddInputVector(ReflectionVector);
+	MeshComponent->AddForce(ReflectionVector);
 }
 
 void APac::OnPacOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
