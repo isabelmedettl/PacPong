@@ -9,6 +9,7 @@
 class USphereComponent;
 class APac;
 UCLASS()
+
 class PACPONG_API AEnemy : public AActor
 {
 	GENERATED_BODY()
@@ -59,14 +60,26 @@ private:
 	//kolla om en punkt är inom bounds
 	bool IsWithinBounds();
 
-	
+	void CheckHealth();
 
-	bool bIdle;
-	bool bKillable;
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
+	int32 InitialHealth;
+
+	int32 CurrentHealth;
+
 	
+	void DoDeath();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	bool bKillable = false;
+	
 
+	UPROPERTY(EditAnywhere)
+	int32 Damage;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDeathEvent();
 };
