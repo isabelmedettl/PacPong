@@ -3,8 +3,12 @@
 
 #include "Pac.h"
 
+#include "Enemy.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 // Sets default values
@@ -19,24 +23,23 @@ APac::APac()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	SphereComponent->SetupAttachment(RootComponent);
 	
-	PacMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 }
 
-void APac::OnPacHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	FVector NormalImpulse, const FHitResult& Hit)
-{
-}
-
-void APac::OnPacOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-}
 
 // Called when the game starts or when spawned
 void APac::BeginPlay()
 {
 	Super::BeginPlay();
+
+	MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &APac::OnPacOverlapBegin);
 	
+}
+
+void APac::DoDeath()
+{
+	OnDeathEvent();
+	// ropa på game manager
 }
 
 // Called every frame
@@ -44,4 +47,19 @@ void APac::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+
+void APac::OnPacOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	AEnemy* Enemy = Cast<AEnemy>(OtherActor);
+	if (!Enemy) return;
+	if (Enemy->bKillable)
+	{
+		CurrentHealth -= Enemy->Damage;
+		if (CurrentHealth <= 0) DoDeath();
+	}
+}
+
 
