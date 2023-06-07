@@ -31,7 +31,7 @@ void APac::BeginPlay()
 	Super::BeginPlay();
 
 	//MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &APac::OnPacOverlapBegin);
-	MeshComponent->OnComponentHit.AddDynamic(this, &APac::OnPacHit);
+	//MeshComponent->OnComponentHit.AddDynamic(this, &APac::OnPacHit);
 	
 }
 
