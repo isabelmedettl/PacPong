@@ -3,7 +3,9 @@
 
 #include "Enemy.h"
 
+#include "Pac.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -22,28 +24,70 @@ AEnemy::AEnemy()
 void AEnemy::OnEnemyOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	PacPawn = Cast<APac>(OtherActor);
+	if (!PacPawn) return;
+	if (bKillable)
+	{
+		CurrentHealth = 0;
+	}
+	else
+	{
+		//damage på pac
+	}
 }
 
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	UpperBoundPatrolLocation = GetActorLocation();
+	SetPatrollingPoints();
+	CurrentTargetLocation = LowerBoundPatrolLocation;
+	
+	CurrentHealth = InitialHealth;
 
-	
-	
+	bKillable = false;
 }
 
 void AEnemy::SetPatrollingPoints()
 {
-	
+	LowerBoundPatrolLocation.Y = FVector(UKismetMathLibrary::RandomUnitVector()).Y * BoundRadius;
+	LowerBoundPatrolLocation.X = UpperBoundPatrolLocation.X;
+}
+
+bool AEnemy::IsWithinBounds()
+{
+	return false;
+}
+
+void AEnemy::CheckHealth()
+{
+	if (CurrentHealth<=0)
+	{
+		Destroy();
+	}
 }
 
 void AEnemy::Patrol()
 {
+	if (CurrentTargetLocation == LowerBoundPatrolLocation && (FVector::Distance(CurrentTargetLocation, GetActorLocation()) <= 1.f ))
+	{
+		CurrentTargetLocation = UpperBoundPatrolLocation;
+	}
+	if (CurrentTargetLocation == UpperBoundPatrolLocation && FVector::Distance(CurrentTargetLocation, GetActorLocation()) <= 1.f )
+	{
+		CurrentTargetLocation = LowerBoundPatrolLocation;
+	}
 }
 
 void AEnemy::CalculateBounds()
 {
+}
+
+void AEnemy::DoDeath()
+{
+	OnDeathEvent();
 }
 
 // Called every frame
@@ -51,17 +95,17 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Rotation
-	//const FRotator NewRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PlayerLocation);
-	//SetActorRotation(FRotator(0, NewRotation.Yaw -90, 0));
+	Patrol();
+
+	const FRotator NewRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), CurrentTargetLocation);
+	SetActorRotation(FRotator(0, NewRotation.Yaw -90, 0));
 	
 	Direction = CurrentTargetLocation - GetActorLocation();
 	Direction.Normalize();
 	const float Distance = FVector::Distance(CurrentTargetLocation, GetActorLocation());
 
-	// Calculate distance the actor can move in this step based on the speed variable
 	float MoveDistance = Speed * DeltaTime;
-	MoveDistance = FMath::Min(MoveDistance, Distance);
+	//MoveDistance = FMath::Min(MoveDistance, Distance);
 	const FVector NewLocation = GetActorLocation() + Direction * MoveDistance;
 	SetActorLocation(NewLocation);
 }
