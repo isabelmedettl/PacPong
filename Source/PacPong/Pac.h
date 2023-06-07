@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Pac.generated.h"
 
+
 class UFloatingPawnMovement;
 class USphereComponent;
 
@@ -34,8 +35,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UFloatingPawnMovement* PacMovement;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	//UProjectileMovementComponent* MovementComponent;
+	UFloatingPawnMovement* MovementComponent;
+	//UPawnMovementComponent* MovementComponent;
 
 public:
 	// Called every frame
