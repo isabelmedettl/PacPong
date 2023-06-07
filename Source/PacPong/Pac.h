@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Pac.generated.h"
 
-class UProjectileMovementComponent;
+
 class UFloatingPawnMovement;
 class USphereComponent;
 
@@ -37,8 +37,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	//UProjectileMovementComponent* MovementComponent;
-	//UFloatingPawnMovement* MovementComponent;
-	UPawnMovementComponent* MovementComponent;
+	UFloatingPawnMovement* MovementComponent;
+	//UPawnMovementComponent* MovementComponent;
 
 public:
 	// Called every frame
