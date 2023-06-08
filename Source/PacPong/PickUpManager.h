@@ -25,6 +25,9 @@ public:
 	int NumberOfBasicPickUpsLeft = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int NumberOfResets = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int DistanceBetweenPickUps = 90;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -39,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<APickUp> BasicPickupClass;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<APickUp> PowerUpPickupClass;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -52,4 +58,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ResetPickUps();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ResetEvent();
 };

@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/Pawn.h"
 #include "Paddle.generated.h"
 
+class APac;
 class UInputMappingContext;
 struct FInputActionValue;
 class UBoxComponent;
@@ -22,6 +24,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float PaddleSpeed = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bPowerUpReady = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float PowerUpTime = 3;
+
+	FTimerHandle PowerUpTimerHandle;
+
+	APac* Pac;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* LeftBoxCollider;
@@ -44,6 +56,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	UInputAction* RightMoveAction;
 
+	UPROPERTY(EditAnywhere)
+	UInputAction* PowerUpAction;
+
+	UFUNCTION()
+	void PowerUp(const FInputActionValue& Value);
+
 	UFUNCTION()
 	void LeftMove(const FInputActionValue& Value);
 
@@ -52,6 +70,15 @@ public:
 
 	UFUNCTION()
 	void OnCollisionHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+	void PowerDown();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PowerUpEvent();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PowerDownEvent();
 
 protected:
 	// Called when the game starts or when spawned
