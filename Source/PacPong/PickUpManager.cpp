@@ -55,5 +55,6 @@ void APickUpManager::ResetPickUps()
 		PickUp->MeshComponent->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 		PickUp->MeshComponent->ToggleVisibility();
 	}
+	ResetEvent();
 }
 

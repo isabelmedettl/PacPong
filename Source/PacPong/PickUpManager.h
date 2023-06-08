@@ -55,4 +55,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ResetPickUps();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ResetEvent();
 };
