@@ -31,24 +31,28 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnDeathEvent();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDamage();
+
+	//UFUNCTION(BlueprintCallable)
+	void TookDamage(float Damage);
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	//UProjectileMovementComponent* MovementComponent;
 	UFloatingPawnMovement* MovementComponent;
-	//UPawnMovementComponent* MovementComponent;
-
-	
 
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	int32 InitialHealth;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	int32 CurrentHealth;
 
+	UFUNCTION(BlueprintCallable, meta=(AllowPrivateAccess = true))
 	void DoDeath();
 public:
 	// Called every frame

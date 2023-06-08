@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "PickUp.generated.h"
 
+class APickUpManager;
+
 UCLASS()
 class PACPONG_API APickUp : public AActor
 {
@@ -20,6 +22,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void PickUpFunc();
+
+	UPROPERTY(BlueprintReadOnly)
+	APickUpManager* Manager = nullptr;
 	
 protected:
 	// Called when the game starts or when spawned
