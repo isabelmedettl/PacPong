@@ -27,9 +27,7 @@ class PACPONG_API USavePacGame : public USaveGame
 	GENERATED_BODY()
 
 public:
-
-	USavePacGame();
-
+	
 	UPROPERTY()
 	FSavePlayer SavedPlayer;
 
@@ -39,7 +37,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	uint32 UserIndex;
 	
-	void SaveGame();
-	
+	void SaveGame(FString SaveName, int64 SaveScore);
 	
 };

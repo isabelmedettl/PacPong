@@ -9,6 +9,7 @@
 
 class UFloatingPawnMovement;
 class USphereComponent;
+class USavePacGame;
 
 UCLASS()
 class PACPONG_API APac : public APawn
@@ -28,6 +29,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bPowered = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int64 HighScore;
+
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	FString PlayerName;
 
 	UFUNCTION()
 	void OnPacOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
@@ -40,6 +46,12 @@ public:
 
 	//UFUNCTION(BlueprintCallable)
 	void TookDamage(float Damage);
+
+	UFUNCTION(BlueprintCallable)
+	void Save();
+
+	UPROPERTY(VisibleAnywhere)
+	USavePacGame* SavedGame;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -47,6 +59,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UFloatingPawnMovement* MovementComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<USavePacGame> SaveGameClass;
 
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
@@ -61,3 +76,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };
+
+

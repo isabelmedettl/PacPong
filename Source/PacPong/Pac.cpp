@@ -4,9 +4,12 @@
 #include "Pac.h"
 
 #include "Enemy.h"
+#include "SavePacGame.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameFramework/SaveGame.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -69,6 +72,22 @@ void APac::TookDamage(float Damage)
 {
 	CurrentHealth -= Damage;
 	if (CurrentHealth <= 0) DoDeath();
+}
+
+void APac::Save()
+{
+	if (!SavedGame)
+	{
+		SavedGame= Cast<USavePacGame>(UGameplayStatics::CreateSaveGameObject(USavePacGame::StaticClass()));
+	}
+	if( SavedGame )
+	{
+		SavedGame->SaveGame(PlayerName, HighScore);
+		if( IsValid(SavedGame) )
+		{
+			UGameplayStatics::SaveGameToSlot(SavedGame, SavedGame->SaveSlotName, SavedGame->UserIndex);
+		}
+	} else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Unable to save...")); }
 }
 
 
