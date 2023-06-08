@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "PickUpManager.generated.h"
 
+class APac;
 class UBoxComponent;
 class APickUp;
 
@@ -45,12 +46,17 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<APickUp> PowerUpPickupClass;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<APac> PacClass;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
 	TArray<APickUp*> BasicPickups = TArray<APickUp*>();
+
+	void SpeedUpGame();
 
 public:
 	// Called every frame

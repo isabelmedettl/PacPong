@@ -2,8 +2,11 @@
 
 
 #include "PickUpManager.h"
+
+#include "Pac.h"
 #include "PickUp.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -14,6 +17,8 @@ APickUpManager::APickUpManager()
 	ManagementZone = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	RootComponent = ManagementZone;
 	NumberOfResets++;
+
+
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +53,16 @@ void APickUpManager::BeginPlay()
 		}
 	}
 	
+}
+
+
+void APickUpManager::SpeedUpGame()
+{
+	AActor* Pac = Cast<APac>(UGameplayStatics::GetActorOfClass(GetWorld(), PacClass));
+	if (Pac)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("found pac"));
+	}
 }
 
 // Called every frame
