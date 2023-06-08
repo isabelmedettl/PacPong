@@ -86,6 +86,8 @@ void APaddle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APaddle::PowerUp(const FInputActionValue& Value)
 {
+	if (!Pac) return;
+	
 	if(bPowerUpReady && !Pac->bPowered)
 	{
 		Pac->bPowered = true;

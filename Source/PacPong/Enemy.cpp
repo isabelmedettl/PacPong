@@ -94,8 +94,8 @@ void AEnemy::Tick(float DeltaTime)
 
 	Patrol();
 
-	const FRotator NewRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), CurrentTargetLocation);
-	SetActorRotation(FRotator(0, NewRotation.Yaw -90, 0));
+	//const FRotator NewRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), CurrentTargetLocation);
+	//SetActorRotation(FRotator(0, NewRotation.Yaw -90, 0));
 	
 	Direction = CurrentTargetLocation - GetActorLocation();
 	Direction.Normalize();
