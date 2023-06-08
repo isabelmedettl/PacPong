@@ -84,7 +84,7 @@ void AEnemy::DoDeath()
 {
 	OnDeathEvent();
 	//GetWorld()->GetGameState();
-	Destroy();
+	//Destroy();
 }
 
 // Called every frame
