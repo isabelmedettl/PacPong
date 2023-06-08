@@ -33,7 +33,7 @@ void AEnemy::OnEnemyOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActo
 	}
 	else
 	{
-		//damage på pac
+		PacPawn->TookDamage(Damage);  
 	}
 }
 
@@ -55,11 +55,7 @@ void AEnemy::SetPatrollingPoints()
 {
 	LowerBoundPatrolLocation.Y = FVector(UKismetMathLibrary::RandomUnitVector()).Y * BoundRadius;
 	LowerBoundPatrolLocation.X = UpperBoundPatrolLocation.X;
-}
-
-bool AEnemy::IsWithinBounds()
-{
-	return false;
+	LowerBoundPatrolLocation.Z = UpperBoundPatrolLocation.Z;
 }
 
 void AEnemy::CheckHealth()
@@ -72,23 +68,22 @@ void AEnemy::CheckHealth()
 
 void AEnemy::Patrol()
 {
-	if (CurrentTargetLocation == LowerBoundPatrolLocation && (FVector::Distance(CurrentTargetLocation, GetActorLocation()) <= 1.f ))
+	if (CurrentTargetLocation.Y <= LowerBoundPatrolLocation.Y && (FVector::Distance(LowerBoundPatrolLocation, GetActorLocation()) <= 3.f ))
 	{
 		CurrentTargetLocation = UpperBoundPatrolLocation;
 	}
-	if (CurrentTargetLocation == UpperBoundPatrolLocation && FVector::Distance(CurrentTargetLocation, GetActorLocation()) <= 1.f )
+	if (CurrentTargetLocation.Y >= UpperBoundPatrolLocation.Y && FVector::Distance(UpperBoundPatrolLocation, GetActorLocation()) <= 3.f )
 	{
 		CurrentTargetLocation = LowerBoundPatrolLocation;
 	}
 }
 
-void AEnemy::CalculateBounds()
-{
-}
+
 
 void AEnemy::DoDeath()
 {
 	OnDeathEvent();
+	//GetWorld()->GetGameState();
 	Destroy();
 }
 
@@ -104,10 +99,8 @@ void AEnemy::Tick(float DeltaTime)
 	
 	Direction = CurrentTargetLocation - GetActorLocation();
 	Direction.Normalize();
-	const float Distance = FVector::Distance(CurrentTargetLocation, GetActorLocation());
 
-	float MoveDistance = Speed * DeltaTime;
-	//MoveDistance = FMath::Min(MoveDistance, Distance);
+	const float MoveDistance = Speed * DeltaTime;;
 	const FVector NewLocation = GetActorLocation() + Direction * MoveDistance;
 	SetActorLocation(NewLocation);
 }
