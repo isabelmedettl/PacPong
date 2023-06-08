@@ -36,7 +36,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	uint32 UserIndex;
+
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	int64 HighestScore;
 	
 	void SaveGame(FString SaveName, int64 SaveScore);
+
+	void LoadGame(int64 SaveHighScore);
 	
 };
