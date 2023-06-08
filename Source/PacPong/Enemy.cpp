@@ -29,6 +29,7 @@ void AEnemy::OnEnemyOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActo
 	if (bKillable)
 	{
 		CurrentHealth = 0;
+		CheckHealth();
 	}
 	else
 	{
@@ -65,7 +66,7 @@ void AEnemy::CheckHealth()
 {
 	if (CurrentHealth<=0)
 	{
-		Destroy();
+		DoDeath();
 	}
 }
 
@@ -88,6 +89,7 @@ void AEnemy::CalculateBounds()
 void AEnemy::DoDeath()
 {
 	OnDeathEvent();
+	Destroy();
 }
 
 // Called every frame
