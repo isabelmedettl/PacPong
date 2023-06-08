@@ -34,12 +34,15 @@ protected:
 
 private:
 	UPROPERTY()
-	APawn* PacPawn;
+	APac* PacPawn;
 
 	FVector Direction;
+	UPROPERTY(VisibleAnywhere, meta=(AllowPrivateAccess = true))
 	FVector CurrentTargetLocation;
 
+	UPROPERTY(VisibleAnywhere, meta=(AllowPrivateAccess = true))
 	FVector UpperBoundPatrolLocation;
+	UPROPERTY(VisibleAnywhere, meta=(AllowPrivateAccess = true))
 	FVector LowerBoundPatrolLocation;
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
@@ -54,17 +57,12 @@ private:
 	//Gå mellan punkter och byta beroende på om man nått den första eller inte
 	void Patrol();
 
-	// Räkna ut en sfär med boundes
-	void CalculateBounds();
-	
-	//kolla om en punkt är inom bounds
-	bool IsWithinBounds();
-
 	void CheckHealth();
 
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	int32 InitialHealth;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	int32 CurrentHealth;
 
 	
@@ -77,7 +75,7 @@ public:
 	bool bKillable = false;
 	
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Damage;
 
 	UFUNCTION(BlueprintImplementableEvent)

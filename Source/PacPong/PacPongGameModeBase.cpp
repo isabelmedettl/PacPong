@@ -3,3 +3,9 @@
 
 #include "PacPongGameModeBase.h"
 
+void APacPongGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	
+}

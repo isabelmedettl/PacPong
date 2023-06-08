@@ -39,7 +39,8 @@ void APac::BeginPlay()
 void APac::DoDeath()
 {
 	OnDeathEvent();
-	// ropa på game manager
+	MeshComponent->SetSimulatePhysics(false);
+	MovementComponent->Deactivate();
 }
 
 // Called every frame
@@ -58,8 +59,17 @@ void APac::OnPacOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* O
 	if (Enemy->bKillable)
 	{
 		CurrentHealth -= Enemy->Damage;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Enemy Hit"));
 		if (CurrentHealth <= 0) DoDeath();
 	}
 }
+
+
+void APac::TookDamage(float Damage)
+{
+	CurrentHealth -= Damage;
+	if (CurrentHealth <= 0) DoDeath();
+}
+
 
 
