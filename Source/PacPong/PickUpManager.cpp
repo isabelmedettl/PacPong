@@ -13,6 +13,7 @@ APickUpManager::APickUpManager()
 	PrimaryActorTick.bCanEverTick = true;
 	ManagementZone = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	RootComponent = ManagementZone;
+	NumberOfResets++;
 }
 
 // Called when the game starts or when spawned
