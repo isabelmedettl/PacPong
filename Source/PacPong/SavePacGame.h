@@ -9,6 +9,18 @@
 /**
  * 
  */
+
+USTRUCT()
+struct FSavePlayer
+{
+	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	FString PlayerName;
+
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	int64 HighScore;
+};
 UCLASS()
 class PACPONG_API USavePacGame : public USaveGame
 {
@@ -17,15 +29,17 @@ class PACPONG_API USavePacGame : public USaveGame
 public:
 
 	USavePacGame();
-	
-	UPROPERTY(VisibleAnywhere, Category = Basic)
-	FString PlayerName;
+
+	UPROPERTY()
+	FSavePlayer SavedPlayer;
 
 	UPROPERTY(VisibleAnywhere, Category = Basic)
-	int64 HighScore;
+	FString SaveSlotName;
+
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	uint32 UserIndex;
 	
 	void SaveGame();
 	
-	void LoadGame();
 	
 };
