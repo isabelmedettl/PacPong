@@ -30,7 +30,15 @@ void APickUpManager::BeginPlay()
 	{
 		for(int y = StartY; y < EndY; y++)
 		{
-			APickUp* PickUp = GetWorld()->SpawnActor<APickUp>(BasicPickupClass, FVector(x * DistanceBetweenPickUps, y * DistanceBetweenPickUps, SpawnHeight), FRotator::ZeroRotator);
+			APickUp* PickUp;
+			if((x == StartX+2 || x == EndX-3) && (y == StartY+2 || y == EndY-3))
+			{
+				PickUp = GetWorld()->SpawnActor<APickUp>(PowerUpPickupClass, FVector(x * DistanceBetweenPickUps, y * DistanceBetweenPickUps, SpawnHeight), FRotator::ZeroRotator);
+			}
+			else
+			{
+				PickUp = GetWorld()->SpawnActor<APickUp>(BasicPickupClass, FVector(x * DistanceBetweenPickUps, y * DistanceBetweenPickUps, SpawnHeight), FRotator::ZeroRotator);
+			}
 			if(PickUp)
 			{
 				BasicPickups.Add(PickUp);
