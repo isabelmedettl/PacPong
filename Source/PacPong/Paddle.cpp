@@ -6,6 +6,8 @@
 #include "Components/BoxComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Pac.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -35,6 +37,13 @@ void APaddle::BeginPlay()
 	LeftBoxCollider->OnComponentHit.AddDynamic(this, &APaddle::OnCollisionHit);
 	RightBoxCollider->OnComponentHit.AddDynamic(this, &APaddle::OnCollisionHit);
 
+	TArray<AActor*> Pacs;
+	UGameplayStatics::GetAllActorsOfClass(this, APac::StaticClass(), Pacs);
+	for(AActor* PacActor : Pacs)
+	{
+		Pac = Cast<APac>(PacActor);
+	}
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -48,6 +57,12 @@ void APaddle::OnCollisionHit(UPrimitiveComponent* HitComponent, AActor* OtherAct
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	UE_LOG(LogTemp, Warning, TEXT("HIT"));
+}
+
+void APaddle::PowerDown()
+{
+	Pac->bPowered = false;
+	PowerDownEvent();
 }
 
 // Called every frame
@@ -65,6 +80,18 @@ void APaddle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		EnhancedInputComponent->BindAction(LeftMoveAction, ETriggerEvent::Triggered, this, &APaddle::LeftMove);
 		EnhancedInputComponent->BindAction(RightMoveAction, ETriggerEvent::Triggered, this, &APaddle::RightMove);
+		EnhancedInputComponent->BindAction(PowerUpAction, ETriggerEvent::Triggered, this, &APaddle::PowerUp);
+	}
+}
+
+void APaddle::PowerUp(const FInputActionValue& Value)
+{
+	if(bPowerUpReady && !Pac->bPowered)
+	{
+		Pac->bPowered = true;
+		bPowerUpReady = false;
+		GetWorldTimerManager().SetTimer(PowerUpTimerHandle, this, &APaddle::PowerDown, PowerUpTime, false);
+		PowerUpEvent();
 	}
 }
 
