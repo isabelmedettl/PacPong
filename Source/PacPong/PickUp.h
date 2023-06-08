@@ -25,6 +25,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	APickUpManager* Manager = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int ScoreValue = 10;
 	
 protected:
 	// Called when the game starts or when spawned

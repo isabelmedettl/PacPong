@@ -25,6 +25,9 @@ public:
 	int NumberOfBasicPickUpsLeft = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int NumberOfResets = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int DistanceBetweenPickUps = 90;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
