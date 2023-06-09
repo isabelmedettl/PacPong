@@ -33,6 +33,8 @@ public:
 
 	FTimerHandle PowerUpTimerHandle;
 
+	FTimerHandle PacFindTimerHandle;
+
 	APac* Pac;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -79,6 +81,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void PowerDownEvent();
+
+	UFUNCTION()
+	void FindPac();
 
 protected:
 	// Called when the game starts or when spawned
