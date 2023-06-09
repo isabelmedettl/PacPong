@@ -15,6 +15,8 @@ struct FSavePlayer
 {
 	GENERATED_BODY()
 
+	//FSavePlayer(FString Name, int64 Score) : PlayerName(Name), HighScore(Score){}
+
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	FString PlayerName;
 
@@ -27,10 +29,18 @@ class PACPONG_API USavePacGame : public USaveGame
 	GENERATED_BODY()
 
 public:
-	
-	UPROPERTY()
-	FSavePlayer SavedPlayer;
 
+
+	
+	//UPROPERTY()
+	//TArray<FSavePlayer> SavedPlayers = TArray<FSavePlayer>();
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<int64> SavedHighScores = TArray<int64>();
+	
+	UPROPERTY(VisibleAnywhere)
+	TArray<FString> SavedPlayerNames = TArray<FString>();
+	
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	FString SaveSlotName;
 
@@ -43,5 +53,9 @@ public:
 	void SaveGame(FString SaveName, int64 SaveScore);
 
 	void LoadGame(int64 SaveHighScore);
+
+	bool CheckIfValid(FString SaveName, int64 SaveScore);
 	
 };
+
+

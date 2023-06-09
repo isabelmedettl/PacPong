@@ -38,6 +38,8 @@ void APac::BeginPlay()
 
 	MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &APac::OnPacOverlapBegin);
 
+	Save();
+	/*
 	if (UGameplayStatics::DoesSaveGameExist("deafult", 0 ))
 	{
 		Load();
@@ -46,6 +48,7 @@ void APac::BeginPlay()
 	{
 		Save();
 	}
+	*/
 }
 
 void APac::DoDeath()
@@ -96,6 +99,7 @@ void APac::Save()
 		if( IsValid(SavedGame) )
 		{
 			UGameplayStatics::SaveGameToSlot(SavedGame, TEXT("deafult"), 0);
+			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
 		}
 	} else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Unable to save...")); }
 }
@@ -106,6 +110,8 @@ void APac::Load()
 	if( SavedGame )
 	{
 		SavedGame->LoadGame(HighScore);
+		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
+
 	}
 	else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: No Game To Load...")); }
 	
