@@ -53,7 +53,7 @@ void AEnemy::BeginPlay()
 
 void AEnemy::SetPatrollingPoints()
 {
-	LowerBoundPatrolLocation.Y = FVector(UKismetMathLibrary::RandomUnitVector()).Y * BoundRadius;
+	LowerBoundPatrolLocation.Y = UpperBoundPatrolLocation.Y + BoundRadius;
 	LowerBoundPatrolLocation.X = UpperBoundPatrolLocation.X;
 	LowerBoundPatrolLocation.Z = UpperBoundPatrolLocation.Z;
 }
