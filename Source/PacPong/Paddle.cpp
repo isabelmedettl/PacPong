@@ -37,12 +37,7 @@ void APaddle::BeginPlay()
 	LeftBoxCollider->OnComponentHit.AddDynamic(this, &APaddle::OnCollisionHit);
 	RightBoxCollider->OnComponentHit.AddDynamic(this, &APaddle::OnCollisionHit);
 
-	TArray<AActor*> Pacs;
-	UGameplayStatics::GetAllActorsOfClass(this, APac::StaticClass(), Pacs);
-	for(AActor* PacActor : Pacs)
-	{
-		Pac = Cast<APac>(PacActor);
-	}
+	GetWorldTimerManager().SetTimer(PacFindTimerHandle, this, &APaddle::FindPac, .2f, false);
 
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -52,6 +47,17 @@ void APaddle::BeginPlay()
 		}
 	}
 }
+
+void APaddle::FindPac()
+{
+	TArray<AActor*> Pacs;
+	UGameplayStatics::GetAllActorsOfClass(this, APac::StaticClass(), Pacs);
+	for(AActor* PacActor : Pacs)
+	{
+		Pac = Cast<APac>(PacActor);
+	}
+}
+
 
 void APaddle::OnCollisionHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
