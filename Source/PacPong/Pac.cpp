@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "SavePacGame.h"
 #include "Components/SphereComponent.h"
+#include "EnvironmentQuery/EnvQueryTypes.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GameFramework/SaveGame.h"
@@ -36,7 +37,18 @@ void APac::BeginPlay()
 	Super::BeginPlay();
 
 	MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &APac::OnPacOverlapBegin);
-	
+
+	Save();
+	/*
+	if (UGameplayStatics::DoesSaveGameExist("deafult", 0 ))
+	{
+		Load();
+	}
+	else
+	{
+		Save();
+	}
+	*/
 }
 
 void APac::DoDeath()
@@ -44,6 +56,7 @@ void APac::DoDeath()
 	OnDeathEvent();
 	MeshComponent->SetSimulatePhysics(false);
 	MovementComponent->Deactivate();
+	SavePlayer();
 }
 
 // Called every frame
@@ -80,14 +93,36 @@ void APac::Save()
 	{
 		SavedGame= Cast<USavePacGame>(UGameplayStatics::CreateSaveGameObject(USavePacGame::StaticClass()));
 	}
+	
 	if( SavedGame )
 	{
-		SavedGame->SaveGame(PlayerName, HighScore);
 		if( IsValid(SavedGame) )
 		{
-			UGameplayStatics::SaveGameToSlot(SavedGame, SavedGame->SaveSlotName, SavedGame->UserIndex);
+			UGameplayStatics::SaveGameToSlot(SavedGame, TEXT("deafult"), 0);
+			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
 		}
 	} else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Unable to save...")); }
+}
+
+void APac::Load()
+{
+	SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("default", 0));
+	if( SavedGame )
+	{
+		SavedGame->LoadGame(HighScore);
+		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
+
+	}
+	else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: No Game To Load...")); }
+	
+}
+
+void APac::SavePlayer()
+{
+	if (SavedGame)
+	{
+		SavedGame->SaveGame(PlayerName, HighScore);
+	}
 }
 
 

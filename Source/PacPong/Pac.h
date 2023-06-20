@@ -32,7 +32,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int64 HighScore;
 
-	UPROPERTY(VisibleAnywhere, Category = Basic)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int64 CurrentScore;
+
+	UPROPERTY(EditAnywhere, Category = Basic)
 	FString PlayerName;
 
 	UFUNCTION()
@@ -50,6 +53,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Save();
 
+	UFUNCTION(BlueprintCallable)
+	void Load();
+
+	UFUNCTION(BlueprintCallable)
+	void SavePlayer();
+	
 	UPROPERTY(VisibleAnywhere)
 	USavePacGame* SavedGame;
 	
