@@ -17,11 +17,21 @@ struct FSavePlayer
 
 	//FSavePlayer(FString Name, int64 Score) : PlayerName(Name), HighScore(Score){}
 
+	/** Identifies player name??*/
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	FString PlayerName;
 
 	UPROPERTY(VisibleAnywhere, Category = Basic)
 	int64 HighScore;
+
+	/** Identifies for which actor this belongs to*/
+	UPROPERTY(VisibleAnywhere, Category = Basic)
+	FName ActorName;
+
+	/** Contains all savegame-marked variables of actor*/
+	UPROPERTY()
+	TArray<uint8> ByteData;
+	
 };
 UCLASS()
 class PACPONG_API USavePacGame : public USaveGame
