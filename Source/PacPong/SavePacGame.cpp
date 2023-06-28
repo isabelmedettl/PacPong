@@ -11,9 +11,14 @@ void USavePacGame::SaveGame(FString SaveName, int64 SaveScore)
 	FSavedPlayer PlayerToSave = FSavedPlayer();
 	PlayerToSave.PlayerName = SaveName;
 	PlayerToSave.HighScore = SaveScore;
-	if (SavedPlayers.IsEmpty())
+	if (SavedPlayers.Num() < 10)
 	{
 		SavedPlayers.Add(PlayerToSave);
+		SavedPlayers.Sort();
+		for (FSavedPlayer x : SavedPlayers)
+		{
+			GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Printing all saved players, Saved name %s, Saved score %i"), *x.PlayerName, x.HighScore));
+		}
 	}
 	else if (SavedPlayers.Contains(PlayerToSave))
 	{
@@ -21,7 +26,7 @@ void USavePacGame::SaveGame(FString SaveName, int64 SaveScore)
 		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved already saved player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
 		for (FSavedPlayer x : SavedPlayers)
 		{
-			GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Printing all saved players, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
+			GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Printing all saved players, Saved name %s, Saved score %i"), *x.PlayerName, x.HighScore));
 		}
 
 	}
