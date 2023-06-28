@@ -84,19 +84,39 @@ void APac::TookDamage(float Damage)
 
 void APac::Save()
 {
-	if (!SavedGame)
+	if (UGameplayStatics::DoesSaveGameExist("deafult", 0))
+	{
+		SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("deafult", 0));
+		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Loaded game") );
+
+	}
+	else if (!UGameplayStatics::DoesSaveGameExist("deafult", 0))
 	{
 		SavedGame= Cast<USavePacGame>(UGameplayStatics::CreateSaveGameObject(USavePacGame::StaticClass()));
-	}
-	
-	if( SavedGame )
-	{
 		if( IsValid(SavedGame) )
 		{
 			UGameplayStatics::SaveGameToSlot(SavedGame, TEXT("deafult"), 0);
 			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
 		}
-	} else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Unable to save...")); }
+	}
+	/*
+	if(SavedGame )
+	{
+		if (UGameplayStatics::DoesSaveGameExist("deafult", 0))
+		{
+			SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("deafult", 0));
+		}
+		//Load();
+		
+		if( IsValid(SavedGame) )
+		{
+			UGameplayStatics::SaveGameToSlot(SavedGame, TEXT("deafult"), 0);
+			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
+		}
+		
+		
+	}
+	*/else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Unable to save...")); }
 }
 
 void APac::Load()
@@ -105,7 +125,7 @@ void APac::Load()
 	if( SavedGame )
 	{
 		SavedGame->LoadGame(CurrentScore);
-		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
+		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Loading deafult 0") );
 
 	}
 	else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: No Game To Load...")); }

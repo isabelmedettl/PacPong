@@ -15,7 +15,7 @@ void USavePacGame::SaveGame(FString SaveName, int64 SaveScore)
 	{
 		SavedPlayers.Add(PlayerToSave);
 	}
-	if (SavedPlayers.Contains(PlayerToSave))
+	else if (SavedPlayers.Contains(PlayerToSave))
 	{
 		SaveSavedPlayer(&PlayerToSave);
 		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved already saved player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
