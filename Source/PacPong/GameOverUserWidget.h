@@ -40,7 +40,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	APaddle* PlayerPaddle;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APac* Pac;
 
 protected:
