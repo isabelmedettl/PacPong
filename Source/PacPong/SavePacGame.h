@@ -74,7 +74,7 @@ public:
 	
 	void SaveGame(FString SaveName, int64 SaveScore);
 
-	void LoadGame(int64 SaveHighScore);
+	void LoadGame();
 
 	void SaveSavedPlayer(FSavedPlayer* PlayerToSave);
 

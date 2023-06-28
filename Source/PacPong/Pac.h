@@ -10,6 +10,7 @@
 class UFloatingPawnMovement;
 class USphereComponent;
 class USavePacGame;
+struct FSavedPlayer;
 
 UCLASS()
 class PACPONG_API APac : public APawn
@@ -61,6 +62,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere)
 	USavePacGame* SavedGame;
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<FSavedPlayer> SavedPlayers = TArray<FSavedPlayer>();
 
 	UFUNCTION(BlueprintCallable)
 	void AddScore(int64 ScoreToAdd);

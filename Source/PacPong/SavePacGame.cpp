@@ -39,7 +39,7 @@ void USavePacGame::SaveGame(FString SaveName, int64 SaveScore)
 	
 }
 
-void USavePacGame::LoadGame(int64 HighScore)
+void USavePacGame::LoadGame()
 {
 	
 }
