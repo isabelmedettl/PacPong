@@ -7,50 +7,36 @@
 
 
 void USavePacGame::SaveGame(FString SaveName, int64 SaveScore)
-{
-	if (SaveName.IsEmpty()) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: No name")); 
-
-	//FSavePlayer PlayerToSave = FSavePlayer(SaveName, SaveScore);
-	if (SavedPlayerNames.Num() == 0)
+{	
+	FSavedPlayer PlayerToSave = FSavedPlayer();
+	PlayerToSave.PlayerName = SaveName;
+	PlayerToSave.HighScore = SaveScore;
+	if (SavedPlayers.IsEmpty())
 	{
-		//SavedPlayers.Add(PlayerToSave);
-		SavedPlayerNames.Add(SaveName);
-		SavedHighScores.Add(SaveScore);
+		SavedPlayers.Add(PlayerToSave);
 	}
-	else if (CheckIfValid(SaveName, SaveScore))
+	if (SavedPlayers.Contains(PlayerToSave))
 	{
-		if (SavedPlayerNames.Contains(SaveName) )
+		SaveSavedPlayer(&PlayerToSave);
+		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved already saved player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
+		for (FSavedPlayer x : SavedPlayers)
 		{
-			
-			/*
-			for (FSavePlayer SP : SavedPlayers)
-			{
-				if (SP.PlayerName.Equals(SaveName))
-				{
-					if (SP.HighScore < SaveScore)
-					{
-						SP.HighScore = SaveScore;
-					}
-				}
-			}
-			*/
-			int index = SavedPlayerNames.IndexOfByKey(SaveName);
-			if (SavedHighScores[index] < SaveScore)
-			{
-				SavedHighScores[index] = SaveScore;
-				
-			}
+			GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Printing all saved players, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
 		}
-		else
-		{
-			SavedPlayerNames.Add(SaveName);
-			SavedHighScores.Add(SaveScore);
-		}
+
+	}
+	else if (CheckIfValidScore(PlayerToSave.HighScore))
+	{
+		SavedPlayers.Remove(SavedPlayers[SavedPlayers.Num()-1]);
+		SavedPlayers.Add(PlayerToSave);
+		SavedPlayers.Sort();
+		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved saved new player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
 	}
 	else
 	{
 		if (SaveName.IsEmpty()) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Couldnt save ")); 
 	}
+	
 }
 
 void USavePacGame::LoadGame(int64 HighScore)
@@ -58,17 +44,23 @@ void USavePacGame::LoadGame(int64 HighScore)
 	
 }
 
-bool USavePacGame::CheckIfValid(FString SaveName, int64 SaveScore)
+void USavePacGame::SaveSavedPlayer(FSavedPlayer* PlayerToSave)
 {
-	if (SavedPlayerNames.Num() >= 10)
+	if (SavedPlayers.Num() >= 10)
 	{
-		int index = SavedPlayerNames.IndexOfByKey(SaveName);
-		if (SavedHighScores[index] <= SaveScore)
+		const uint32 Index = SavedPlayers.Find(*PlayerToSave);
+		if (Index != INDEX_NONE)
 		{
-			SavedPlayerNames.Remove(SaveName);
-			return true;
+			if (SavedPlayers[Index].HighScore <= PlayerToSave->HighScore)
+			{
+				SavedPlayers[Index].HighScore = PlayerToSave->HighScore;
+				SavedPlayers.Sort();
+			}
 		}
-		return false;
 	}
-	return true;
+}
+
+bool USavePacGame::CheckIfValidScore(const int64 HighScoreToCheck)
+{
+	return SavedPlayers[SavedPlayers.Num()-1].HighScore < HighScoreToCheck;
 }

@@ -31,6 +31,12 @@ APac::APac()
 }
 
 
+void APac::AddScore(int64 ScoreToAdd)
+{
+	CurrentScore = ScoreToAdd;
+	GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Now Score %i, ScoreToAdd %i"), CurrentScore, ScoreToAdd));
+}
+
 // Called when the game starts or when spawned
 void APac::BeginPlay()
 {
@@ -39,16 +45,6 @@ void APac::BeginPlay()
 	MeshComponent->OnComponentBeginOverlap.AddDynamic(this, &APac::OnPacOverlapBegin);
 
 	Save();
-	/*
-	if (UGameplayStatics::DoesSaveGameExist("deafult", 0 ))
-	{
-		Load();
-	}
-	else
-	{
-		Save();
-	}
-	*/
 }
 
 void APac::DoDeath()
@@ -75,7 +71,6 @@ void APac::OnPacOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* O
 	if (Enemy->bKillable)
 	{
 		CurrentHealth -= Enemy->Damage;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Enemy Hit"));
 		if (CurrentHealth <= 0) DoDeath();
 	}
 }
@@ -109,7 +104,7 @@ void APac::Load()
 	SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("default", 0));
 	if( SavedGame )
 	{
-		SavedGame->LoadGame(HighScore);
+		SavedGame->LoadGame(CurrentScore);
 		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
 
 	}
@@ -121,7 +116,7 @@ void APac::SavePlayer()
 {
 	if (SavedGame)
 	{
-		SavedGame->SaveGame(PlayerName, HighScore);
+		SavedGame->SaveGame(PlayerName, CurrentScore);
 	}
 }
 
