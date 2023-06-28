@@ -150,6 +150,7 @@ void APac::SavePlayer()
 	if (SavedGame)
 	{
 		SavedGame->SaveGame(PlayerName, CurrentScore);
+		UGameplayStatics::SaveGameToSlot(SavedGame, TEXT("deafult"), 0);
 	}
 }
 
