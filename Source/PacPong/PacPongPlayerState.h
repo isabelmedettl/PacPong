@@ -42,7 +42,5 @@ public:
 
 	UFUNCTION()
 	virtual void LoadPlayerState(USavePacGame* PacSaveObject);
-
-	
 	
 };

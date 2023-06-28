@@ -36,7 +36,7 @@ public:
 	int64 CurrentScore;
 
 	UPROPERTY(EditAnywhere, Category = Basic)
-	FString PlayerName;
+	FString PlayerName = "Isabel";
 
 	UFUNCTION()
 	void OnPacOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
@@ -61,6 +61,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere)
 	USavePacGame* SavedGame;
+
+	UFUNCTION(BlueprintCallable)
+	void AddScore(int64 ScoreToAdd);
 	
 protected:
 	// Called when the game starts or when spawned

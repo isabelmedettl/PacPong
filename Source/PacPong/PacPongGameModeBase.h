@@ -15,9 +15,6 @@ class PACPONG_API APacPongGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 	virtual void BeginPlay() override;
-
-public:
-	void WriteSaveGame();
-
+	
 	
 };

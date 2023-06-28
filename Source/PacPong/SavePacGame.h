@@ -11,11 +11,15 @@
  */
 
 USTRUCT()
-struct FSavePlayer
+struct FSavedPlayer
 {
 	GENERATED_BODY()
-
-	//FSavePlayer(FString Name, int64 Score) : PlayerName(Name), HighScore(Score){}
+	
+	FSavedPlayer()
+	{
+		PlayerName = " ";
+		HighScore = 0;
+	}
 
 	/** Identifies player name??*/
 	UPROPERTY(VisibleAnywhere, Category = Basic)
@@ -32,6 +36,16 @@ struct FSavePlayer
 	UPROPERTY()
 	TArray<uint8> ByteData;
 	
+	FORCEINLINE bool operator<(const FSavedPlayer& Other) const
+	{
+		return HighScore < Other.HighScore;
+	}
+
+	FORCEINLINE bool operator==(const FSavedPlayer& Other) const
+	{
+		return PlayerName.Equals(Other.PlayerName) && HighScore == Other.HighScore;
+	}
+	
 };
 UCLASS()
 class PACPONG_API USavePacGame : public USaveGame
@@ -40,10 +54,8 @@ class PACPONG_API USavePacGame : public USaveGame
 
 public:
 
-
-	
-	//UPROPERTY()
-	//TArray<FSavePlayer> SavedPlayers = TArray<FSavePlayer>();
+	UPROPERTY(VisibleAnywhere)
+	TArray<FSavedPlayer> SavedPlayers = TArray<FSavedPlayer>();
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<int64> SavedHighScores = TArray<int64>();
@@ -64,7 +76,9 @@ public:
 
 	void LoadGame(int64 SaveHighScore);
 
-	bool CheckIfValid(FString SaveName, int64 SaveScore);
+	void SaveSavedPlayer(FSavedPlayer* PlayerToSave);
+
+	bool CheckIfValidScore(const int64 HighScoreToCheck);
 	
 };
 

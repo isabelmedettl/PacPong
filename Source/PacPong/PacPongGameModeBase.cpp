@@ -11,8 +11,3 @@ void APacPongGameModeBase::BeginPlay()
 
 	
 }
-
-void APacPongGameModeBase::WriteSaveGame()
-{
-	
-}
