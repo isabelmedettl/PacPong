@@ -52,7 +52,7 @@ void APac::DoDeath()
 	OnDeathEvent();
 	MeshComponent->SetSimulatePhysics(false);
 	MovementComponent->Deactivate();
-	SavePlayer();
+	//SavePlayer();
 }
 
 // Called every frame

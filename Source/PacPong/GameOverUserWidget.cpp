@@ -35,7 +35,6 @@ void UGameOverUserWidget::NativeOnInitialized()
 					RefreshHighScore();
 				}   
 			}
-			
 		}
 	}
 }

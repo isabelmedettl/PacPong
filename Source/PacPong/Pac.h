@@ -35,7 +35,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int64 CurrentScore;
 
-	UPROPERTY(EditAnywhere, Category = Basic)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Basic)
 	FString PlayerName = "Isabel";
 
 	UFUNCTION()
