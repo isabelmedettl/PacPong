@@ -87,6 +87,7 @@ void APac::Save()
 	if (UGameplayStatics::DoesSaveGameExist("deafult", 0))
 	{
 		SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("deafult", 0));
+		SavedGame->LoadGame();
 		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Loaded game") );
 
 	}
@@ -124,7 +125,15 @@ void APac::Load()
 	SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("default", 0));
 	if( SavedGame )
 	{
-		SavedGame->LoadGame(CurrentScore);
+		SavedGame->LoadGame();
+		/*
+		for (FSavedPlayer SavedPlayer : SavedGame->SavedPlayers)
+		{
+			SavedPlayers.Add(SavedPlayer);
+		}
+		*/
+		SavedPlayers = SavedGame->SavedPlayers;
+		SavedPlayers.Sort();
 		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Loading deafult 0") );
 
 	}
