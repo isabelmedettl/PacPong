@@ -65,7 +65,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddScore(int64 ScoreToAdd);
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void StartGame();
 	
 protected:

@@ -35,6 +35,7 @@ public:
 
 	FTimerHandle PacFindTimerHandle;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APac* Pac;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
