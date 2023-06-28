@@ -37,6 +37,10 @@ void APac::AddScore(int64 ScoreToAdd)
 	GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Now Score %i, ScoreToAdd %i"), CurrentScore, ScoreToAdd));
 }
 
+void APac::StartGame_Implementation()
+{
+}
+
 // Called when the game starts or when spawned
 void APac::BeginPlay()
 {
