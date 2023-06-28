@@ -65,6 +65,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddScore(int64 ScoreToAdd);
 	
+	UFUNCTION(BlueprintNativeEvent)
+	void StartGame();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
