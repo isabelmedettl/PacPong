@@ -30,7 +30,7 @@ void UGameOverUserWidget::NativeOnInitialized()
 			for (AActor* PacActor: ActorsToFind)
 			{
 				Pac = Cast<APac>(PacActor);
-				if (Pac  && Pac->SavedGame /* && Pac->SavedGame->CheckIfValidScore(Pac->HighScore)*/)
+				if (Pac  && Pac->SavedGame  && Pac->SavedGame->CheckIfValidScore(Pac->HighScore))
 				{
 					RefreshHighScore();
 				}   
@@ -41,8 +41,6 @@ void UGameOverUserWidget::NativeOnInitialized()
 
 void UGameOverUserWidget::RefreshHighScore()
 {
-	// skapa de widgest som behövs för att få namnet
-	//HighScoreText = NewObject<UTextBlock>(this, UTextBlock::StaticClass());
 	if (HighScoreText)
 	{
 		HighScoreText->SetVisibility(ESlateVisibility::Visible);
