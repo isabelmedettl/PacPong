@@ -18,19 +18,20 @@ void USavePacGame::SaveGame(FString SaveName, int64 SaveScore)
 	else if (SavedPlayers.Contains(PlayerToSave))
 	{
 		SaveSavedPlayer(&PlayerToSave);
+		/*
 		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved already saved player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
 		for (FSavedPlayer x : SavedPlayers)
 		{
 			GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Printing all saved players, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
 		}
-
+		*/
 	}
 	else if (CheckIfValidScore(PlayerToSave.HighScore))
 	{
 		SavedPlayers.Remove(SavedPlayers[SavedPlayers.Num()-1]);
 		SavedPlayers.Add(PlayerToSave);
 		SavedPlayers.Sort();
-		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved saved new player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
+		//GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved saved new player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
 	}
 	else
 	{
@@ -62,5 +63,9 @@ void USavePacGame::SaveSavedPlayer(FSavedPlayer* PlayerToSave)
 
 bool USavePacGame::CheckIfValidScore(const int64 HighScoreToCheck)
 {
+	if (SavedPlayers.Num() < 10)
+	{
+		return true;
+	}
 	return SavedPlayers[SavedPlayers.Num()-1].HighScore < HighScoreToCheck;
 }

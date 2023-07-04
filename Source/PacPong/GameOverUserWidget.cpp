@@ -54,6 +54,4 @@ void UGameOverUserWidget::RefreshHighScore()
 	}
 	EnterButton->SetVisibility(ESlateVisibility::Visible);
 	EditableText->SetVisibility(ESlateVisibility::Visible);
-	
-	// Spara namnet i fältet och highscore till det namnet i save
 }

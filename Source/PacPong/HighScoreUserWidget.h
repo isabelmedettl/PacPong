@@ -22,8 +22,8 @@ class PACPONG_API UHighScoreUserWidget : public UUserWidget
 
 public:
 
-	UPROPERTY(meta = (BindWidget))
-	UWrapBox* HighScorePanel;
+	//UPROPERTY(meta = (BindWidget))
+	//UWrapBox* HighScorePanel;
 	
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* PName1;
