@@ -67,5 +67,9 @@ void USavePacGame::SaveSavedPlayer(FSavedPlayer* PlayerToSave)
 
 bool USavePacGame::CheckIfValidScore(const int64 HighScoreToCheck)
 {
+	if (SavedPlayers.Num() > 10)
+	{
+		return true;
+	}
 	return SavedPlayers[SavedPlayers.Num()-1].HighScore < HighScoreToCheck;
 }
