@@ -10,6 +10,8 @@
  * 
  */
 
+class UHighScoreUserWidget;
+
 USTRUCT()
 struct FSavedPlayer
 {
@@ -74,12 +76,15 @@ public:
 	
 	void SaveGame(FString SaveName, int64 SaveScore);
 
-	void LoadGame();
-
 	void SaveSavedPlayer(FSavedPlayer* PlayerToSave);
 
 	bool CheckIfValidScore(const int64 HighScoreToCheck);
-	
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UHighScoreUserWidget> WidgetClass;
+
+	UPROPERTY(VisibleAnywhere)
+	UHighScoreUserWidget* HighScoreWidget;
 };
 
 

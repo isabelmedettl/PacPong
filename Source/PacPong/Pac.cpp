@@ -34,7 +34,6 @@ APac::APac()
 void APac::AddScore(int64 ScoreToAdd)
 {
 	CurrentScore = ScoreToAdd;
-	GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Now Score %i, ScoreToAdd %i"), CurrentScore, ScoreToAdd));
 }
 
 void APac::StartGame_Implementation()
@@ -56,7 +55,6 @@ void APac::DoDeath()
 	OnDeathEvent();
 	MeshComponent->SetSimulatePhysics(false);
 	MovementComponent->Deactivate();
-	//SavePlayer();
 }
 
 // Called every frame
@@ -91,9 +89,10 @@ void APac::Save()
 	if (UGameplayStatics::DoesSaveGameExist("deafult", 0))
 	{
 		SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("deafult", 0));
-		SavedGame->LoadGame();
-		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Loaded game") );
-
+		if (!SavedGame)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("No save game") );
+		}
 	}
 	else if (!UGameplayStatics::DoesSaveGameExist("deafult", 0))
 	{
@@ -101,49 +100,11 @@ void APac::Save()
 		if( IsValid(SavedGame) )
 		{
 			UGameplayStatics::SaveGameToSlot(SavedGame, TEXT("deafult"), 0);
-			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
 		}
 	}
-	/*
-	if(SavedGame )
-	{
-		if (UGameplayStatics::DoesSaveGameExist("deafult", 0))
-		{
-			SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("deafult", 0));
-		}
-		//Load();
-		
-		if( IsValid(SavedGame) )
-		{
-			UGameplayStatics::SaveGameToSlot(SavedGame, TEXT("deafult"), 0);
-			GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("SAvedSlot deafult 0") );
-		}
-		
-		
-	}
-	*/else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Unable to save...")); }
+	else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Unable to save...")); }
 }
 
-void APac::Load()
-{
-	SavedGame = Cast<USavePacGame>(UGameplayStatics::LoadGameFromSlot("default", 0));
-	if( SavedGame )
-	{
-		SavedGame->LoadGame();
-		/*
-		for (FSavedPlayer SavedPlayer : SavedGame->SavedPlayers)
-		{
-			SavedPlayers.Add(SavedPlayer);
-		}
-		*/
-		SavedPlayers = SavedGame->SavedPlayers;
-		SavedPlayers.Sort();
-		GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Loading deafult 0") );
-
-	}
-	else { if( GEngine ) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: No Game To Load...")); }
-	
-}
 
 void APac::SavePlayer()
 {

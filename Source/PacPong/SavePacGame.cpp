@@ -3,6 +3,8 @@
 
 #include "SavePacGame.h"
 
+#include "HighScoreUserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -14,39 +16,22 @@ void USavePacGame::SaveGame(FString SaveName, int64 SaveScore)
 	if (SavedPlayers.Num() < 10)
 	{
 		SavedPlayers.Add(PlayerToSave);
-		SavedPlayers.Sort();
-		for (FSavedPlayer x : SavedPlayers)
-		{
-			GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Printing all saved players, Saved name %s, Saved score %i"), *x.PlayerName, x.HighScore));
-		}
 	}
 	else if (SavedPlayers.Contains(PlayerToSave))
 	{
 		SaveSavedPlayer(&PlayerToSave);
-		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved already saved player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
-		for (FSavedPlayer x : SavedPlayers)
-		{
-			GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Printing all saved players, Saved name %s, Saved score %i"), *x.PlayerName, x.HighScore));
-		}
-
+		
 	}
 	else if (CheckIfValidScore(PlayerToSave.HighScore))
 	{
 		SavedPlayers.Remove(SavedPlayers[SavedPlayers.Num()-1]);
 		SavedPlayers.Add(PlayerToSave);
-		SavedPlayers.Sort();
-		GEngine->AddOnScreenDebugMessage(-1,200,FColor::Green,FString::Printf(TEXT("Saved saved new player, Saved name %s, Saved score %i"), *PlayerToSave.PlayerName, PlayerToSave.HighScore));
 	}
 	else
 	{
 		if (SaveName.IsEmpty()) GEngine->AddOnScreenDebugMessage(-1, 12.f, FColor::Red, TEXT("Error: Couldnt save ")); 
 	}
-	
-}
-
-void USavePacGame::LoadGame()
-{
-	
+	SavedPlayers.Sort();
 }
 
 void USavePacGame::SaveSavedPlayer(FSavedPlayer* PlayerToSave)
@@ -59,7 +44,6 @@ void USavePacGame::SaveSavedPlayer(FSavedPlayer* PlayerToSave)
 			if (SavedPlayers[Index].HighScore <= PlayerToSave->HighScore)
 			{
 				SavedPlayers[Index].HighScore = PlayerToSave->HighScore;
-				SavedPlayers.Sort();
 			}
 		}
 	}

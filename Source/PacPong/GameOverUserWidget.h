@@ -25,16 +25,16 @@ class PACPONG_API UGameOverUserWidget : public UUserWidget
 
 public:
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* HighScoreText;
 	
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* EnterButtonText;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UButton* EnterButton;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UEditableText* EditableText;
 
 	UPROPERTY(VisibleAnywhere)
@@ -47,4 +47,16 @@ protected:
 	virtual void NativeOnInitialized() override;
 
 	void RefreshHighScore();
+
+	UFUNCTION(BlueprintGetter)
+	UTextBlock* GetHighScoreText() const {return HighScoreText; }
+
+	UFUNCTION(BlueprintGetter)
+	UTextBlock* GetEnterButtonText() const {return EnterButtonText;}
+
+	UFUNCTION(BlueprintGetter)
+	UButton* GetEnterButton() const {return EnterButton;}
+
+	UFUNCTION(BlueprintGetter)
+	UEditableText* GetEditableText() const {return EditableText;}
 };

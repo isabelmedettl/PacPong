@@ -9,11 +9,13 @@
 #include "HighScoreUserWidget.h"
 
 #include "Pac.h"
+#include "PacGameInstance.h"
 #include "Paddle.h"
 #include "SavePacGame.h"
 #include "Components/TextBlock.h"
 #include "Components/WrapBox.h"
 #include "Kismet/GameplayStatics.h"
+
 
 void UHighScoreUserWidget::NativeOnInitialized()
 {
@@ -40,6 +42,7 @@ void UHighScoreUserWidget::NativeOnInitialized()
 	ScoreTextBlocks.Add(PScore_9);
 	ScoreTextBlocks.Add(PScore_10);
 
+	
 	for (UTextBlock* TextBlock : NameTextBlocks)
 	{
 		TextBlock->SetVisibility(ESlateVisibility::Hidden);
@@ -49,35 +52,25 @@ void UHighScoreUserWidget::NativeOnInitialized()
 	{                                                      
 		TextBlock->SetVisibility(ESlateVisibility::Hidden);
 	}
-	
-	PlayerPaddle = Cast<APaddle>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	if (PlayerPaddle)
-	{
-		TArray<AActor*> ActorsToFind;
-		if(UWorld* World = GetWorld())
-		{
-			UGameplayStatics::GetAllActorsOfClass(GetWorld(), APac::StaticClass(), ActorsToFind);
-			for (AActor* PacActor: ActorsToFind)
-			{
-				Pac = Cast<APac>(PacActor);
-				if (Pac  && Pac->SavedGame)
-				{
-					RefreshScoreBoard();
-				}   
-			}
-		}
-	}
+
+	UpdateScoreBoard();
 }
 
-void UHighScoreUserWidget::RefreshScoreBoard()
+
+void UHighScoreUserWidget::UpdateScoreBoard()
 {
-	int32 Counter = 0;
-	for (FSavedPlayer SavedPlayer : Pac->SavedPlayers)
+	UPacGameInstance* GameInstance = Cast<UPacGameInstance>(GetGameInstance());
+	if (GameInstance && GameInstance->SavedGame)
 	{
-		NameTextBlocks[Counter]->SetText(FText::FromString(SavedPlayer.PlayerName));
-		ScoreTextBlocks[Counter]->SetText(FText::AsNumber(SavedPlayer.HighScore));
-		NameTextBlocks[Counter]->SetVisibility(ESlateVisibility::Visible);
-		ScoreTextBlocks[Counter]->SetVisibility(ESlateVisibility::Visible); 
-		Counter++;
+		int32 Counter = 0;
+		
+		for (FSavedPlayer SavedPlayer : GameInstance->SavedGame->SavedPlayers)
+		{
+			NameTextBlocks[Counter]->SetVisibility(ESlateVisibility::Visible);
+			ScoreTextBlocks[Counter]->SetVisibility(ESlateVisibility::Visible); 
+			NameTextBlocks[Counter]->SetText(FText::FromString(SavedPlayer.PlayerName));
+			ScoreTextBlocks[Counter]->SetText(FText::AsNumber(SavedPlayer.HighScore));
+			Counter++;
+		}
 	}
 }

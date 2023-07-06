@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Pac.generated.h"
 
-
 class UFloatingPawnMovement;
 class USphereComponent;
 class USavePacGame;
@@ -54,8 +53,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Save();
 
-	UFUNCTION(BlueprintCallable)
-	void Load();
+	//UFUNCTION(BlueprintCallable)
+	//void Load();
 
 	UFUNCTION(BlueprintCallable)
 	void SavePlayer();
@@ -71,6 +70,8 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void StartGame();
+
+	
 	
 protected:
 	// Called when the game starts or when spawned

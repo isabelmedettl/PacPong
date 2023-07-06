@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "HighScoreUserWidget.generated.h"
 
+class USavePacGame;
 class UButton;
 class UTextBlock;
 class UEditableText;
@@ -15,6 +16,8 @@ class UWrapBox;
 /**
  * 
  */
+
+
 UCLASS()
 class PACPONG_API UHighScoreUserWidget : public UUserWidget
 {
@@ -97,8 +100,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<UTextBlock*> ScoreTextBlocks = TArray<UTextBlock*>();
 	
+
+	UPROPERTY(VisibleAnywhere)
+	USavePacGame* SavedGame;
+
+	
 protected:
 	virtual void NativeOnInitialized() override;
 
-	void RefreshScoreBoard();
+	UFUNCTION(BlueprintCallable)
+	void UpdateScoreBoard();
+
 };
