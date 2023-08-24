@@ -62,7 +62,7 @@ void UHighScoreUserWidget::UpdateScoreBoard()
 	UPacGameInstance* GameInstance = Cast<UPacGameInstance>(GetGameInstance());
 	if (GameInstance && GameInstance->SavedGame)
 	{
-		int32 Counter = 0;
+		int Counter = 0;
 		
 		for (FSavedPlayer SavedPlayer : GameInstance->SavedGame->SavedPlayers)
 		{

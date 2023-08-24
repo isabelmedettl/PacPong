@@ -8,6 +8,7 @@
 #include "SavePacGame.h"
 #include "Components/Button.h"
 #include "Components/EditableText.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -16,7 +17,7 @@ void UGameOverUserWidget::NativeOnInitialized()
 	Super::NativeOnInitialized();
 
 	HighScoreText->SetVisibility(ESlateVisibility::Hidden);
-	EnterButtonText->SetVisibility(ESlateVisibility::Hidden);
+	SubmitImage->SetVisibility(ESlateVisibility::Hidden);
 	EnterButton->SetVisibility(ESlateVisibility::Hidden);
 	EditableText->SetVisibility(ESlateVisibility::Hidden);
 
@@ -46,13 +47,13 @@ void UGameOverUserWidget::RefreshHighScore()
 	if (HighScoreText)
 	{
 		HighScoreText->SetVisibility(ESlateVisibility::Visible);
-		HighScoreText->SetText(FText::FromString("You've earned a place on the high score board!"));
+		HighScoreText->SetText(FText::FromString("New high score!"));
 	}
 
-	if (EnterButtonText)
+	if (SubmitImage)
 	{
-		EnterButtonText->SetVisibility(ESlateVisibility::Visible);
-		EnterButtonText->SetText(FText::FromString("Save name"));
+		SubmitImage->SetVisibility(ESlateVisibility::Visible);
+		//EnterButtonText->SetText(FText::FromString("Save name"));
 	}
 	EnterButton->SetVisibility(ESlateVisibility::Visible);
 	EditableText->SetVisibility(ESlateVisibility::Visible);

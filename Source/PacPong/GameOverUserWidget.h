@@ -14,6 +14,7 @@
 
 class UButton;
 class UTextBlock;
+class UImage;
 class UEditableText;
 class APaddle;
 class APac;
@@ -29,7 +30,7 @@ public:
 	UTextBlock* HighScoreText;
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	UTextBlock* EnterButtonText;
+	UImage* SubmitImage;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UButton* EnterButton;
@@ -52,7 +53,7 @@ protected:
 	UTextBlock* GetHighScoreText() const {return HighScoreText; }
 
 	UFUNCTION(BlueprintGetter)
-	UTextBlock* GetEnterButtonText() const {return EnterButtonText;}
+	UImage* GetSubmitImage() const {return SubmitImage;}
 
 	UFUNCTION(BlueprintGetter)
 	UButton* GetEnterButton() const {return EnterButton;}
